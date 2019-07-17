@@ -51,7 +51,7 @@ Resources:
       Runtime: python3.7
       Role:
         Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaExecutionRole']]
       Events:
         GetEvent:
           Type: Api
