@@ -50,8 +50,9 @@ Resources:
       Handler: hello.handler
       Runtime: python3.7
       Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaExecutionRole']]
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
       Events:
         GetEvent:
           Type: Api
