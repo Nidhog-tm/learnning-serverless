@@ -1,5 +1,7 @@
 import unittest
+import json
 import index
+import hello
 
 
 class TestHandlerCase(unittest.TestCase):
@@ -11,6 +13,13 @@ class TestHandlerCase(unittest.TestCase):
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
         self.assertIn('Hello World', result['body'])
+        
+        event = {'pathParameters': {'name': 'Takashi'} }
+        result = hello.handler(event, None)
+        print(result) 
+        self.assertEqual(result['statusCode'], 200)
+        self.assertEqual(result['headers']['Content-Type'], 'application/json')
+        self.assertIn('hello Takashi', result['body'])
 
 
 if __name__ == '__main__':
