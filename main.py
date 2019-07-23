@@ -1,6 +1,6 @@
 # coding: utf-8
 import json
-from jinja2 import Environment, FileSystemLoader
+from Jinja2 import Environment, FileSystemLoader
 
 def handle(event, context):
     env = Environment(loader=FileSystemLoader( './templates', encoding='utf8'))
