@@ -2,7 +2,7 @@
 import json
 from jinja2 import Environment, FileSystemLoader
 
-def handle(event, context):
+def handler(event, context):
     env = Environment(loader=FileSystemLoader( './templates', encoding='utf8'))
 
     template = env.get_template('index.html')
