@@ -12,3 +12,4 @@ def handle(event, context):
         "headers": {"Content-Type": "text/html"},
         "body": html
     }
+
