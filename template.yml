@@ -59,21 +59,6 @@ Resources:
           Properties:
             Path: /hello/{name}
             Method: get
-  Main:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: main.handler
-      Runtime: python3.7
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /main
-            Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
     Type: AWS::IAM::Role
