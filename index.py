@@ -10,4 +10,4 @@ def handler(event, context):
     return {'statusCode': 200,
             'body': json.dumps(data),
             'headers': {'Access-Control-Allow-Origin': '*',
-                        'Content-Type': 'application/json'}}l
+                        'Content-Type': 'application/json'}}
