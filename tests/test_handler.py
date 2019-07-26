@@ -2,7 +2,6 @@ import unittest
 import json
 import hello
 import index
-import main
 
 
 class TestHandlerCase(unittest.TestCase):
