@@ -6,7 +6,6 @@ phases:
 
       # Upgrade AWS CLI to the latest version
       - pip install --upgrade awscli
-      - pip install Jinja2
 
   pre_build:
     commands:
