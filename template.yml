@@ -66,7 +66,7 @@ Resources:
       Runtime: python3.7
       Role:
         Fn::GetAtt:
-        - LambdaExecutionRole
+        - GetDBlistIamRole
         - Arn
       Events:
         GetEvent:
@@ -90,6 +90,21 @@ Resources:
           Principal:
             Service: [lambda.amazonaws.com]
           Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
+  GetDBlistIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "get-db-list-function-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
       Policies:
       - PolicyName: "get-db-list-function-policy"
         PolicyDocument:
@@ -101,7 +116,3 @@ Resources:
               # dynamodb操作用ポリシー
                 - "dynamodb:*"
               Resource: "*"
-      Path: /
-      ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-      PermissionsBoundary: !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/CodeStar_${ProjectId}_PermissionsBoundary'
