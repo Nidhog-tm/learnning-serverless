@@ -4,10 +4,10 @@ dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('MT_serveres_test')
 
 def get_person(id):
-    response = table.get_item(
-            Key={
-                 'test_id': id
-            }
+    response = table.scan(
+            # Key={
+            #      'test_id': id
+            # }
         )
     return response['Item']
 
