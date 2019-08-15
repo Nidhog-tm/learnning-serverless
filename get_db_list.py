@@ -9,7 +9,7 @@ def get_person(id):
             #      'test_id': id
             # }
         )
-    return response['Item']
+    return response['Items']
 
 def handler(event, context):
     person = get_person('001')
