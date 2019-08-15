@@ -5,9 +5,6 @@ table    = dynamodb.Table('MT_serveres_test')
 
 def get_person(id):
     response = table.scan(
-            # Key={
-            #      'test_id': id
-            # }
         )
     return response['Items']
 
