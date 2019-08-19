@@ -4,8 +4,7 @@ dynamodb = boto3.resource('dynamodb')
 table    = dynamodb.Table('MT_serveres_test')
 
 def get_person(id):
-    response = table.scan(
-        )
+    response = table.scan()
     return response['Items']
 
 def handler(event, context):
