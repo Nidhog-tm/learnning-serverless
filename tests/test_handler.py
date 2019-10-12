@@ -1,10 +1,4 @@
-import os
-import sys
-path = os.path.join(os.path.dirname(__file__), '../')
-sys.path.append(path)
-
 import unittest
-import json
 import hello
 import index
 
@@ -18,14 +12,13 @@ class TestHandlerCase(unittest.TestCase):
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
         self.assertIn('Hello World', result['body'])
-        
-        event = {'pathParameters': {'name': 'Takashi'} }
+
+        event = {'pathParameters': {'name': 'Takashi'}}
         result = hello.handler(event, None)
-        print(result) 
+        print(result)
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
         self.assertIn('hello Takashi', result['body'])
-        
 
 
 if __name__ == '__main__':
