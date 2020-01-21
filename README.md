@@ -12,6 +12,6 @@ source .venv_2/bin/activate
 
 ## テスト実行
 ```
-python -m unittest tests.test_get_db_list -v
+python -m unittest tests.test_handler -v
 python -m unittest tests.test_get_db_list -v
 ```
