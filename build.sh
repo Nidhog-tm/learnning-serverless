@@ -35,7 +35,7 @@ do
 
     if [ -e ${dir}/tests/ ]; then
       mkdir ${dir}/build/tests;
-      cp ${dir}/tests/unit/*.py ${dir}/build/tests/;
+      cp ${dir}/tests/*.py ${dir}/build/tests/;
     fi
   fi
 done
