@@ -29,7 +29,7 @@ Resources:
     Properties:
       FunctionName: HelloWorld-function
       Description: 
-      CodeUri: learnning_serverless
+      CodeUri: /
       Handler: index.handler
       Runtime: python3.6
       Role: 
