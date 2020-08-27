@@ -1,35 +1,38 @@
-AWSTemplateFormatVersion: 2010-09-09
-Transform:
-- AWS::Serverless-2016-10-31
-- AWS::CodeStar
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  learnning_serverless
 
-Parameters:
-  ProjectId:
-    Type: String
-    Description: CodeStar projectId used to associate new resources to team members
-  CodeDeployRole:
-    Type: String
-    Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
-  Stage:
-    Type: String
-    Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
-    Default: ''
-
+# SAMテンプレート共通の設定
 Globals:
+  Api:
+    # APIGatewayの名前はswagger.yamlに書くのではなく、ここに記入する
+    # swagger.yamlにはステージ変数しか渡すことができないため、swagger.yamlで環境ごとの差異を吸収することができない
+    Name: learnning-serverless-apigw
   Function:
-    AutoPublishAlias: live
-    DeploymentPreference:
-      Enabled: true
-      Type: Canary10Percent5Minutes
-      Role: !Ref CodeDeployRole
+    Timeout: 29
+    # 環境変数
+    Environment:
+      Variables:
+        TZ: Asia/Tokyo
+        LOG_LEVEL: 'DEBUG'
 
 Resources:
+  #  _                    _         _            _    ____ ___
+  # | |    __ _ _ __ ___ | |__   __| | __ _     / \  |  _ \_ _|
+  # | |   / _` | '_ ` _ \| '_ \ / _` |/ _` |   / _ \ | |_) | |
+  # | |__| (_| | | | | | | |_) | (_| | (_| |  / ___ \|  __/| |
+  # |_____\__,_|_| |_| |_|_.__/ \__,_|\__,_| /_/   \_\_|  |___|
+
   HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: HelloWorld-function
+      Description: 
+      CodeUri: get_whitelist_projectId
       Handler: index.handler
-      Runtime: python3.7
-      Role:
+      Runtime: python3.6
+      Role: 
         Fn::GetAtt:
         - LambdaExecutionRole
         - Arn
@@ -43,41 +46,6 @@ Resources:
           Type: Api
           Properties:
             Path: /
-            Method: post
-  Hello:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: hello.handler
-      Runtime: python3.7
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /hello/{name}
-            Method: get
-  GetDBList:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: get_db_list.handler
-      Runtime: python3.7
-      Role:
-        Fn::GetAtt:
-        - LambdaExecutionRole
-        - Arn
-      Events:
-        GetEvent:
-          Type: Api
-          Properties:
-            Path: /getlist
-            Method: get
-        PostEvent:
-          Type: Api
-          Properties:
-            Path: /getlist
             Method: post
   LambdaExecutionRole:
     Description: Creating service role in IAM for AWS Lambda
@@ -94,3 +62,100 @@ Resources:
       ManagedPolicyArns:
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonDynamoDBFullAccess'
         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+
+# AWSTemplateFormatVersion: 2010-09-09
+# Transform:
+# - AWS::Serverless-2016-10-31
+# - AWS::CodeStar
+
+# Parameters:
+#   ProjectId:
+#     Type: String
+#     Description: CodeStar projectId used to associate new resources to team members
+#   CodeDeployRole:
+#     Type: String
+#     Description: IAM role to allow AWS CodeDeploy to manage deployment of AWS Lambda functions
+#   Stage:
+#     Type: String
+#     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
+#     Default: ''
+
+# Globals:
+#   Function:
+#     AutoPublishAlias: live
+#     DeploymentPreference:
+#       Enabled: true
+#       Type: Canary10Percent5Minutes
+#       Role: !Ref CodeDeployRole
+
+# Resources:
+#   HelloWorld:
+#     Type: AWS::Serverless::Function
+#     Properties:
+#       Handler: index.handler
+#       Runtime: python3.7
+#       Role:
+#         Fn::GetAtt:
+#         - LambdaExecutionRole
+#         - Arn
+#       Events:
+#         GetEvent:
+#           Type: Api
+#           Properties:
+#             Path: /
+#             Method: get
+#         PostEvent:
+#           Type: Api
+#           Properties:
+#             Path: /
+#             Method: post
+#   Hello:
+#     Type: AWS::Serverless::Function
+#     Properties:
+#       Handler: hello.handler
+#       Runtime: python3.7
+#       Role:
+#         Fn::GetAtt:
+#         - LambdaExecutionRole
+#         - Arn
+#       Events:
+#         GetEvent:
+#           Type: Api
+#           Properties:
+#             Path: /hello/{name}
+#             Method: get
+#   GetDBList:
+#     Type: AWS::Serverless::Function
+#     Properties:
+#       Handler: get_db_list.handler
+#       Runtime: python3.7
+#       Role:
+#         Fn::GetAtt:
+#         - LambdaExecutionRole
+#         - Arn
+#       Events:
+#         GetEvent:
+#           Type: Api
+#           Properties:
+#             Path: /getlist
+#             Method: get
+#         PostEvent:
+#           Type: Api
+#           Properties:
+#             Path: /getlist
+#             Method: post
+#   LambdaExecutionRole:
+#     Description: Creating service role in IAM for AWS Lambda
+#     Type: AWS::IAM::Role
+#     Properties:
+#       RoleName: !Sub 'CodeStar-${ProjectId}-Execution${Stage}'
+#       AssumeRolePolicyDocument:
+#         Statement:
+#         - Effect: Allow
+#           Principal:
+#             Service: [lambda.amazonaws.com]
+#           Action: sts:AssumeRole
+#       Path: /
+#       ManagedPolicyArns:
+#         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonDynamoDBFullAccess'
+#         - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
