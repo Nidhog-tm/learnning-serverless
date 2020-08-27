@@ -8,7 +8,7 @@ phases:
       - pip install --upgrade awscli
       #- build
       - sh build.sh
-      - chmod 777 app/build
+      - chmod 777 .
 
   pre_build:
     commands:
