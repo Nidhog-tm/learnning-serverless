@@ -29,7 +29,7 @@ Resources:
     Properties:
       FunctionName: HelloWorld-function
       Description: 
-      CodeUri: 
+      CodeUri: app/build
       Handler: index.handler
       Runtime: python3.6
       Role: 
