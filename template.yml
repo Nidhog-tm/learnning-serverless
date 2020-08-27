@@ -29,7 +29,7 @@ Resources:
     Properties:
       FunctionName: HelloWorld-function
       Description: 
-      CodeUri: get_whitelist_projectId
+      CodeUri: learnning_serverless
       Handler: index.handler
       Runtime: python3.6
       Role: 
