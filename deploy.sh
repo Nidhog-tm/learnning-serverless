@@ -1,0 +1,2 @@
+aws cloudformation package --template template.yml --s3-bucket learnning-serverless-deploy --output-template package.yml
+aws cloudformation deploy --template-file /Users/matsuokatakashi/for_stady/learnning_serverless/package.yml --stack-name learnning-serverless --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
