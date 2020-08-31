@@ -21,5 +21,5 @@ def handler(event, context):
         },
         'body': json.dumps({
             'result': person
-        })
+        }, ensure_ascii=False)
     }
