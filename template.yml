@@ -18,6 +18,56 @@ Globals:
         LOG_LEVEL: 'DEBUG'
 
 Resources:
+  #     _    ____ ___    ____    _  _____ _______        ___ __   __
+  #    / \  |  _ \_ _|  / ___|  / \|_   _| ____\ \      / / \\ \ / /
+  #   / _ \ | |_) | |  | |  _  / _ \ | | |  _|  \ \ /\ / / _ \\ V /
+  #  / ___ \|  __/| |  | |_| |/ ___ \| | | |___  \ V  V / ___ \| |
+  # /_/   \_\_|  |___|  \____/_/   \_\_| |_____|  \_/\_/_/   \_\_|
+
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      # ここで指定するステージの他にデフォルトで "Stage"というステージが作られます
+      StageName: "Prod"
+      DefinitionUri: swagger.yaml
+      MethodSettings:
+        # CloudWatchLogsの有効化
+        - DataTraceEnabled: true
+          LoggingLevel: 'ERROR'
+          ResourcePath: '/*'
+          HttpMethod: '*'
+      # ステージ変数 swagger.yamlでは ${stageVariables.Env} として参照することができます。
+      # swagger.yamlはステージ変数としてAWS::AccountIdやAWS::Regionを保持させるとswagger.yaml内で読み込むことができません。
+      # AWSリージョンとAWSアカウントIDが含まれるLambda関数のARNを一気に渡しても読み込めません。
+
+  # APIGatewayのAPIをboto3で叩くためのロール
+  APIGatewayDescribeIAMRole:
+    DependsOn:
+      - ApiGateway
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: apigateway-describe-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: apigateway-describe-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "apigateway:*"
+                Resource: "arn:aws:apigateway:*::/*"
+              - Effect: "Allow"
+                Action: "logs:*"
+                Resource: "*"
   #  _                    _         _            _    ____ ___
   # | |    __ _ _ __ ___ | |__   __| | __ _     / \  |  _ \_ _|
   # | |   / _` | '_ ` _ \| '_ \ / _` |/ _` |   / _ \ | |_) | |
