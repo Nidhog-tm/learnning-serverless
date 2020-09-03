@@ -3,8 +3,8 @@ swagger: "2.0"
 info:
   version: "1.0"
   title: "learnning-serverless-apigw"
-host: "z5xuipvtuk.execute-api.ap-northeast-1.amazonaws.com"
-basePath: "/Prod"
+# host: "z5xuipvtuk.execute-api.ap-northeast-1.amazonaws.com"
+# basePath: "/Prod"
 schemes:
 - "https"
 paths:
@@ -34,7 +34,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:635294083134:function:get-db-list-function/invocations"
+        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:635294083134:function:get-db-list-function:live/invocations"
         responses:
           default:
             statusCode: "200"
@@ -81,7 +81,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:635294083134:function:get-db-list-function/invocations"
+        uri: "arn:aws:apigateway:ap-northeast-1:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-northeast-1:635294083134:function:get-db-list-function:live/invocations"
         responses:
           default:
             statusCode: "200"
