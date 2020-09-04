@@ -108,7 +108,7 @@ Resources:
       AutoPublishAlias: live
       DeploymentPreference:
         Type: AllAtOnce
-      Runtime: python3.7
+      Runtime: python3.6
       Role:
         Fn::GetAtt:
         - LambdaExecutionRole
@@ -125,6 +125,35 @@ Resources:
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Sub ${GetDBList.Arn}:live
+      Principal: apigateway.amazonaws.com
+
+  AddDBList:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: add-db-list-function
+      Description: 
+      CodeUri: app/build
+      Handler: add_db_list.handler
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+      Runtime: python3.6
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+  AddDBListLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AddDBList}
+      RetentionInDays: 30
+  # APIGatewayから呼び出されるLambdaには権限を付与する必要がある
+  AddDBListPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn: AddDBListAliaslive
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Sub ${AddDBList.Arn}:live
       Principal: apigateway.amazonaws.com
 
   LambdaExecutionRole:
